@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 Alan David Rojas Lopez alandavidrl11@gmail.com
+Copyright © 2021 Alan Rojas alandavidrl11@gmail.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
