@@ -96,3 +96,70 @@ func ListCategories() ([]Category, error) {
 	}
 	return categories, nil
 }
+
+// CreateTask adds done task to it's proper category
+func CreateTask(category, payload string) (int, error) {
+	var id int
+	err := db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(categoriesBucket)
+		cb := b.Bucket([]byte(category))
+		id64, err := cb.NextSequence()
+		if err != nil {
+			return err
+		}
+		id = int(id64)
+		key := itob(id)
+		return cb.Put(key, []byte(payload))
+	})
+	if err != nil {
+		return -1, err
+	}
+	return id, nil
+}
+
+// ListTasks returns all the done tasks related to a category
+func ListTasks(category string) ([]Task, error) {
+	var tasks []Task
+	err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(categoriesBucket)
+		cb := b.Bucket([]byte(category))
+		c := cb.Cursor()
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			tasks = append(tasks, Task{
+				Key:   btoi(k),
+				Value: string(v),
+			})
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return tasks, nil
+}
+
+// BucketExists returns whether a Bucket exists
+func BucketExists(name string) bool {
+	exists, err := bucketExists(name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return exists
+}
+
+// bucketExists returns whether a Bucket exists and handles errors
+func bucketExists(name string) (bool, error) {
+	var exists bool
+	err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(categoriesBucket)
+		cb := b.Bucket([]byte(name))
+		if cb != nil {
+			exists = true
+		}
+		return nil
+	})
+	if err != nil {
+		return exists, err
+	}
+	return exists, err
+}
