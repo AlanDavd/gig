@@ -6,6 +6,24 @@ A CLI application to hold a historic log of done tasks separated by category.
 
 ## Install
 
+To install the app you can download the source code:
+
+```bash
+$ git clone git@github.com:AlanDavd/gig.git
+```
+
+Then `cd` into the `gig` folder and run:
+
+```bash
+$ go install .
+```
+
+Also you can run:
+
+```bash
+$ go get "github.com/alandavd/gig"
+```
+
 ## Usage
 
 `gig` has only one purpose, save done tasks, that's why the usage of it has only two actions, list and add both categories and tasks.
