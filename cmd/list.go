@@ -26,7 +26,7 @@ import (
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List categories and tasks",
-	Long: `List categories and tasks of a category.`,
+	Long:  `List categories and tasks of a category.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		sectionFlag := cmd.Flag("tasks")
 		switch sectionFlag.Value.String() {
@@ -72,5 +72,5 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 
 	// Local flags
-	listCmd.Flags().BoolP("tasks", "t", false, "List categories or tasks")
+	listCmd.Flags().BoolP("tasks", "t", false, "List tasks of a category")
 }
