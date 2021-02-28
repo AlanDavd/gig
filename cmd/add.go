@@ -26,7 +26,7 @@ import (
 var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add a done task",
-	Long: `Add a done task to it's proper category.`,
+	Long:  `Add a done task to it's proper category.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		category := args[0]
 		task := args[1]

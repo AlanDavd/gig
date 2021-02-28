@@ -22,7 +22,7 @@ import (
 )
 
 var (
-	db *bolt.DB
+	db               *bolt.DB
 	categoriesBucket = []byte("gigdb")
 )
 
@@ -33,7 +33,7 @@ type Category struct {
 
 // Task is the representation of a task that is done by the being time
 type Task struct {
-	Key int
+	Key   int
 	Value string
 }
 

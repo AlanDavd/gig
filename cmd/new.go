@@ -27,7 +27,7 @@ import (
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Add new category",
-	Long: `Add new category to store done tasks.`,
+	Long:  `Add new category to store done tasks.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		catName := strings.Join(args, " ")
 		id, err := db.CreateCategory(catName)
