@@ -28,7 +28,7 @@ import (
 var exportCmd = &cobra.Command{
 	Use:   "export",
 	Short: "Export your data to JSON.",
-	Long: `Export your tasks and categories to a JSON file.`,
+	Long:  `Export your tasks and categories to a JSON file.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		data, err := db.ExportData()
 		if err != nil {

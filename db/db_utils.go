@@ -15,7 +15,10 @@ limitations under the License.
 */
 package db
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+	"time"
+)
 
 // itob ...
 func itob(v int) []byte {
@@ -27,4 +30,10 @@ func itob(v int) []byte {
 // btoi ...
 func btoi(b []byte) int {
 	return int(binary.BigEndian.Uint64(b))
+}
+
+// currentDate sets MM-DD-YYYY to the current day
+func currentDate() string {
+	now := time.Now()
+	return now.Format("01-02-2006")
 }

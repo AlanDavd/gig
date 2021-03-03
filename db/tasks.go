@@ -16,6 +16,7 @@ limitations under the License.
 package db
 
 import (
+	"encoding/json"
 	"github.com/boltdb/bolt"
 	"log"
 	"time"
@@ -33,8 +34,9 @@ type Category struct {
 
 // Task is the representation of a task that is done by the being time
 type Task struct {
-	Key   int    `json:"id"`
-	Value string `json:"description"`
+	Key     int    `json:"id"`
+	Value   string `json:"description"`
+	Created string `json:"created"`
 }
 
 // JSONCategory holds a slice of tasks as the only key.
@@ -117,7 +119,17 @@ func CreateTask(category, payload string) (int, error) {
 		}
 		id = int(id64)
 		key := itob(id)
-		return cb.Put(key, []byte(payload))
+		now := currentDate()
+		task := Task{
+			Key:     id,
+			Value:   payload,
+			Created: now,
+		}
+		data, err := json.Marshal(task)
+		if err != nil {
+			return err
+		}
+		return cb.Put(key, data)
 	})
 	if err != nil {
 		return -1, err
@@ -133,9 +145,12 @@ func ListTasks(category string) ([]Task, error) {
 		cb := b.Bucket([]byte(category))
 		c := cb.Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
+			var data Task
+			json.Unmarshal(v, &data)
 			tasks = append(tasks, Task{
-				Key:   btoi(k),
-				Value: string(v),
+				Key:     btoi(k),
+				Value:   data.Value,
+				Created: data.Created,
 			})
 		}
 		return nil
