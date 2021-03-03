@@ -28,13 +28,21 @@ var (
 
 // Category is the representation of a nested bucket that holds tasks
 type Category struct {
-	Key string
+	Key string `json:"category"`
 }
 
 // Task is the representation of a task that is done by the being time
 type Task struct {
-	Key   int
-	Value string
+	Key   int    `json:"id"`
+	Value string `json:"description"`
+}
+
+// JSONCategory holds a slice of tasks as the only key.
+// It is also the representation of a JSON schema of categories
+// and their tasks.
+type JSONCategory struct {
+	Category string `json:"category"`
+	Tasks    []Task `json:"tasks"`
 }
 
 // Init exposes database initialization to external clients
@@ -136,6 +144,37 @@ func ListTasks(category string) ([]Task, error) {
 		return nil, err
 	}
 	return tasks, nil
+}
+
+// ExportData returns JSON data from all database data
+func ExportData() ([]JSONCategory, error) {
+	var categories []JSONCategory
+	// Open database connection
+	err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(categoriesBucket) // Main database file
+		c := b.Cursor()
+		// Loop through all categories
+		for k, _ := c.First(); k != nil; k, _ = c.Next() {
+			var categoryTasks []Task // List of tasks by category
+			var jsonCategory JSONCategory
+			cb := b.Bucket(k) // Get inside the bucket of each category
+			tc := cb.Cursor() // Tasks cursor
+			for tk, v := tc.First(); tk != nil; tk, v = tc.Next() {
+				categoryTasks = append(categoryTasks, Task{
+					Key:   btoi(tk),
+					Value: string(v),
+				})
+			}
+			jsonCategory.Category = string(k)
+			jsonCategory.Tasks = categoryTasks
+			categories = append(categories, jsonCategory)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return categories, nil
 }
 
 // BucketExists returns whether a Bucket exists

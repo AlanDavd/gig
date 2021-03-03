@@ -16,29 +16,40 @@ limitations under the License.
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/alandavd/gig/db"
 	"github.com/spf13/cobra"
 	"log"
+	"os"
 )
 
-// addCmd represents the add command
-var addCmd = &cobra.Command{
-	Use:   "add",
-	Short: "Add a done task",
-	Long:  `Add a done task to it's proper category.`,
+// exportCmd represents the export command
+var exportCmd = &cobra.Command{
+	Use:   "export",
+	Short: "Export your data to JSON.",
+	Long: `Export your tasks and categories to a JSON file.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// TODO: Handle gig new category without description of task, it currently breaks the app
-		category := args[0]
-		task := args[1]
-		id, err := db.CreateTask(category, task)
+		data, err := db.ExportData()
 		if err != nil {
-			log.Fatalf("Error while creating task \"%s\": %v", task, err)
+			log.Fatal(err)
 		}
-		fmt.Printf("Created new task %d successfully\n", id)
+		jsonData, err := json.MarshalIndent(data, "", "    ")
+		if err != nil {
+			log.Fatal(err)
+		}
+		f, err := os.Create("gigHistory.json")
+		defer f.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if _, err = f.Write(jsonData); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Your database history was written to your current folder successfully.\n")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(addCmd)
+	rootCmd.AddCommand(exportCmd)
 }
