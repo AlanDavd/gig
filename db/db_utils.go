@@ -33,8 +33,8 @@ func btoi(b []byte) int {
 	return int(binary.BigEndian.Uint64(b))
 }
 
-// currentDate sets MM-DD-YYYY to the current day
+// currentDate sets MM-DD-YYYY hh:mm:ss format to the current day
 func currentDate() string {
 	now := time.Now()
-	return now.Format("01-02-2006")
+	return now.Format("01-02-2006 15:04:05")
 }
