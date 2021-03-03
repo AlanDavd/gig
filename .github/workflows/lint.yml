@@ -2,11 +2,11 @@ on: [push, pull_request]
 name: Test
 jobs:
   lint:
-    name: Check golint
+    name: Check gofmt
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: golint
+      - name: gofmt
         uses: grandcolline/golang-github-actions@v1.1.0
         with:
           run: lint

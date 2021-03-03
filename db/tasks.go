@@ -175,9 +175,12 @@ func ExportData() ([]JSONCategory, error) {
 			cb := b.Bucket(k) // Get inside the bucket of each category
 			tc := cb.Cursor() // Tasks cursor
 			for tk, v := tc.First(); tk != nil; tk, v = tc.Next() {
+				var jsonTask Task
+				json.Unmarshal(v, &jsonTask)
 				categoryTasks = append(categoryTasks, Task{
-					Key:   btoi(tk),
-					Value: string(v),
+					Key:     jsonTask.Key,
+					Value:   jsonTask.Value,
+					Created: jsonTask.Created,
 				})
 			}
 			jsonCategory.Category = string(k)
