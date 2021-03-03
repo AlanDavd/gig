@@ -18,7 +18,7 @@ Then `cd` into the `gig` folder and run:
 $ go install .
 ```
 
-Also you can run:
+Also, you can run:
 
 ```bash
 $ go get "github.com/alandavd/gig"
@@ -58,3 +58,19 @@ The command `list` serves both tasks and categories as well, to list tasks of a 
 $ gig list -t "<category_name>"
 ```
 
+### Export
+
+`gig` allows you to export all your database history (categories, and their tasks) to a single json file.
+The `export` command will create a json file in the directory in which you are calling the command.
+You can do it with the next command:
+
+```bash
+$ gig export
+```
+
+## Future of the Project
+
+I created this application for my own usage on my daily basis, it has all the functions that I required. I'm currently developing it, and I will develop new features if I required them.
+
+If you are using this project, and you enjoy it, please let me know. You can primarily reach me to alandavidrl11@gmail.com
+Really hope you find this project helpful :).
