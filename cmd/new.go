@@ -1,3 +1,4 @@
+// Package cmd holds all the commands the user interacts with.
 /*
 Copyright © 2021 Alan Rojas alandavidrl11@gmail.com
 

@@ -1,3 +1,4 @@
+// Package db manages all the interactions related to the database.
 /*
 Copyright © 2021 Alan Rojas alandavidrl11@gmail.com
 
