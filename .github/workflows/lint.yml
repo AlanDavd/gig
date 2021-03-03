@@ -1,0 +1,13 @@
+on: [push, pull_request]
+name: Test
+jobs:
+  lint:
+    name: Check golint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: golint
+        uses: grandcolline/golang-github-actions@v1.1.0
+        with:
+          run: lint
+          token: ${{ secrets.GITHUB_TOKEN }}
