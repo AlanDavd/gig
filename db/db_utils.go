@@ -21,14 +21,14 @@ import (
 	"time"
 )
 
-// itob ...
+// itob turns integer into a byte slice
 func itob(v int) []byte {
 	b := make([]byte, 8)
 	binary.BigEndian.PutUint64(b, uint64(v))
 	return b
 }
 
-// btoi ...
+// btoi turns a byte slice into an integer
 func btoi(b []byte) int {
 	return int(binary.BigEndian.Uint64(b))
 }
